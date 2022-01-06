@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Dapp story</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+</head>
+<body>
+  <h1>Dapping the final project</h1>
+  <div id="mm-detected"></div>
+
+  <!-- Connect to MetaMask Wallet -->
+
+  <button id="mm-connect">Connect to MetaMask</button>
+
+  <!-- Display current address -->
+
+  <div id="mm-current-account"></div>
+
+  <p>
+  <!-- Enter Profile account -->
+  <div>
+   <!-- <input id="chk-profile-account" type="string" placeholder="Enter wallet address"/>  -->
+    <button id="chk-profile-button">Validate user account</button>
+  <!-- Display profile validation result  -->
+  <div id="chk-profile-msg"></div>
+  </div>
+
+  </p>
+
+  <p>
+  <!-- Add users  -->
+  <div>
+  <!-- <input id="chk-profile-account" type="string" placeholder="Enter wallet address"/>  -->
+   <button id="add-rootuser-button">Add root user</button>
+  <!-- Display profile validation result  -->
+  <div id="add-rootuser-msg"></div>
+  </div>
+  </p>
+
+  <p>
+    <!-- Map accounts to root -->
+    <div>
+    <!-- <input id="chk-profile-account" type="string" placeholder="Enter wallet address"/>  -->
+     <button id="map-rootuser-button">Map root user</button>
+    <!-- Display profile validation result  -->
+    <div id="map-rootuser-msg"></div>
+    </div>
+    </p>
+
+
+  <!-- Provide an input to change the contract text value -->
+  <div>
+  <input id="id-name-box" type="string" placeholder="Provide name"/>  
+  <input id="id-age-box" type="number" placeholder="Provide age"/>  
+  <input id="id-phone-box" type="number" placeholder="Provide phone"/>  
+</div>
+  <button id="id-update-button">Update profile</button>
+
+  <!-- Read input from contract -->
+  <div>
+    <button id="id-get-value">Read My Profile</button>
+  </div>
+  <div id="id-display-value">Current Simple Storage Value: </div>
+
+</body>
+
+<!-- Had trouble and had to move the script down! -->
+<script type="text/javascript" src="dapp.js"></script>
+
+
+</html>
