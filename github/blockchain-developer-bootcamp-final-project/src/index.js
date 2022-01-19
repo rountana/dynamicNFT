@@ -13,11 +13,30 @@ import { randomBytes } from '@stablelib/random'
 
 // var encrypt = window.ethereum.;
 // contract address on Ropsten:
-const idAddress = '0x3CA2Bb903D50C43D50054398282eE0Aba31F123f'
+const idAddress = '0x670A04216f6A7CE80f90f951cce75F0dEE9472BF'
 
 // add contract ABI from Remix:
 const idABI =
 [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -40,12 +59,100 @@ const idABI =
 				"type": "string"
 			}
 		],
-		"name": "DataLog",
+		"name": "UrlLog",
 		"type": "event"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "msg",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "ethAcc",
+				"type": "address"
+			}
+		],
+		"name": "accountAddrLog",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "msg",
+				"type": "string"
+			}
+		],
+		"name": "messg",
+		"type": "event"
+	},
+	{
+		"stateMutability": "nonpayable",
+		"type": "fallback"
+	},
+	{
 		"inputs": [],
-		"name": "get",
+		"name": "checkUserAccess",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "ethAcc",
+				"type": "address"
+			}
+		],
+		"name": "createRootUser",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "ethAcc",
+				"type": "address"
+			}
+		],
+		"name": "deleteRootUser",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getStr",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -60,11 +167,42 @@ const idABI =
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "profileData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "did",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "streamID",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "ethAcc",
 				"type": "address"
 			}
 		],
-		"name": "retrieveDID",
+		"name": "retrieveUrl",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -98,7 +236,26 @@ const idABI =
 				"type": "string"
 			}
 		],
-		"name": "saveDID",
+		"name": "saveUrl",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_text",
+				"type": "string"
+			}
+		],
+		"name": "setStr",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -107,31 +264,13 @@ const idABI =
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "x",
+				"name": "newOwner",
 				"type": "address"
 			}
 		],
-		"name": "set",
+		"name": "transferOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "urlRef",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "streamID",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -142,17 +281,12 @@ const idABI =
 				"type": "address"
 			}
 		],
-		"name": "userRefID",
+		"name": "validAccounts",
 		"outputs": [
 			{
-				"internalType": "string",
-				"name": "did",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "streamID",
-				"type": "string"
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -160,9 +294,11 @@ const idABI =
 	}
 ]
 
-// Using the 'load' event listener for Javascript to
-//
-// metamask checks, ensure metamask is available
+/////////////////////////////////////////////////////////
+// PRE-CHECKS 
+/////////////////////////////////////////////////////////
+
+// Ensure ethereum APIs and Metamask available 
 //
 window.addEventListener('load', function() {
 
@@ -190,24 +326,41 @@ window.addEventListener('load', function() {
 	}
 })	  
 
-// check if called from valid ethereum account 
-function validateEthAcc() {
-// to be coded
-}
+//global variables to carry across functions
+let ethAcc = '';
+let did = ''
+
 
 // Make connections to Ethereuem and instantiate smart contract
-
-//global variable to carry accouth number across functions
-let ethAcc = '';
-
 // connect to smart contract
 
 var web3 = new Web3(window.ethereum)
 const idWallet = new web3.eth.Contract(idABI, idAddress)
 idWallet.setProvider(window.ethereum)
 
+
+// grab the elements early on, to prep screen for account rotation
+const chkUserAccess = document.getElementById('chk-useraccess-button');
+const idAddRootUser = document.getElementById('add-rootuser-button');
+const idDelRootUser = document.getElementById('delete-rootuser-button');
+const idCreate = document.getElementById('id-create-button');
+const idUpdate = document.getElementById('id-update-button');
+const idGetValue = document.getElementById('id-retrieve-button')
+const idOutput = document.getElementById('id-msg-output')
+const profileValue1 = document.getElementById('read-profile-name')
+const profileValue2 = document.getElementById('read-profile-age')
+const profileValue3 = document.getElementById('read-profile-phone')
+
+chkUserAccess.disabled = true;
+idAddRootUser.disabled = true;
+idDelRootUser.disabled = true;
+idCreate.disabled = true;
+idUpdate.disabled = true;
+idGetValue.disabled = true;
+
+
 /////////////////////////////////////////////////////////
-// USER ACTION HANDLING STARTS HERE
+// USER ACTION HANDLING - Check account
 ////////////////////////////////////////////////////////
 
 // Grab the "connect to metamask" button object 
@@ -223,87 +376,188 @@ mmEnable.onclick = async () => {
   ethAcc = accounts[0]
   // grab html element and populate it with the current address
   var mmCurrentAccount = document.getElementById('mm-current-account');
-  mmCurrentAccount.innerHTML = 'Current Account: ' + accounts
-  mmEnable.disabled = true;
+  mmCurrentAccount.innerHTML = 'Account connected -- ' + accounts
+
+  //disable check account button after validation
+//   mmEnable.disabled = true;
+  //enable account to profile link check feature
+  chkUserAccess.disabled = false;  
+  //make sure other buttons disabled, in case of account switch
+  idAddRootUser.disabled = true;
+  idDelRootUser.disabled = true;
+  idCreate.disabled = true;
+  idUpdate.disabled = true;
+  idGetValue.disabled = true;
+
+  idOutput.innerHTML = ""
+  profileValue1.innerHTML = ""
+  profileValue2.innerHTML = ""
+  profileValue3.innerHTML = ""
+
 }
 
-// point to ceramic test net url - avbl options :
+//////////////////////////////////////////
+// CHECK IF USER HAS ACCESS TO ANY PROFILES
+//////////////////////////////////////////
 
-	// read only access :
-	// const API_URL = 'https://gateway-clay.ceramic.network'
-	// write access:
-	const API_URL = 'https://ceramic-clay.3boxlabs.com'
-	// local node
-	// const API_URL = 'https://localhost:7007'
+chkUserAccess.onclick = async () => {
 
-	// Create Ceramic instance of http-client
-	const ceramic = new CeramicClient(API_URL);
+	const didValue = await idWallet.methods.checkUserAccess().call({from: ethereum.selectedAddress})
 	
+	console.log("DID linked to this user address: " + didValue)
+	// if profile data exists
+		if (didValue != 0 && didValue != " ")
+		{
+			alert("Profile found for user.. continue")
 
-//Validate if valid ETH account
-validateEthAcc()
+			//reset caller address, in case account changed
+			ethAcc = ethereum.selectedAddress;
+
+			//enable create, update and read functions
+			idCreate.disabled = false;
+			idUpdate.disabled = false;
+			idGetValue.disabled = false;
+		  
+		}
+		else
+		{
+			// user address does not own any profiles 
+			alert("No linked profile..")
+			//enable option to add address as root user
+			idCreate.disabled = false;
+		}	
+}
+
+/////////////////////////////////////////////////////////
+// ADMIN ACTIONS - SET UP ROOT USER
+////////////////////////////////////////////////////////
+
+idAddRootUser.onclick = async () => {
+  // grab value from input box
+  const rootUserAddr = document.getElementById('rootuser-addr').value;
+  idCreate.disabled = false;
+  idUpdate.disabled = false;
+  idGetValue.disabled = false;
+  await idWallet.methods.createRootUser(rootUserAddr).send({from: ethereum.selectedAddress})
+  console.log("root user added : " + rootUserAddr)
+
+  // check if account number entered is a valid ethereum account 
+  // future code - to be done
+  validateEthAcc()
+
+  //store current account address as default
+  ethAcc = ethereum.selectedAddress;
+
+  //provide screen confirmation 
+  const mapResult = document.getElementById('map-rootuser-result')
+  mapResult.innerHTML = "Added " + rootUserAddr + " as root user";
+
+}
+
+/////////////////////////////////////////////////////////
+// DELETE ROOT USER
+////////////////////////////////////////////////////////
+
+idDelRootUser.onclick = async () => {
+	// grab value from input box
+	const rootUserAddr = document.getElementById('rootuser-addr').value;
+
+	await idWallet.methods.deleteRootUser(rootUserAddr).send({from: ethereum.selectedAddress})
+	idCreate.disabled = true;
+	idUpdate.disabled = true;
+	idGetValue.disabled = true;
+    
+	//reset current account address
+	ethAcc = '';
+  
+	//provide screen confirmation 
+	const mapResult = document.getElementById('map-rootuser-result')
+	mapResult.innerHTML = "Deleted " + rootUserAddr + " as root user";
+
+	// clear other o/p fields
+	profileValue1.innerHTML = "" 
+	profileValue2.innerHTML = ""
+	profileValue3.innerHTML = ""
+	idOutput.innerHTML = ""
+  }
+  
 
 //////////////////////////////////////////
 // CREATE USER PROFILE 
+// step 1 - create a small onchain profile  with just URLs - DID/ stream ID
+// step 2 - create offchain profile record with actual user data - can be any user validated profiel data
 //////////////////////////////////////////
 
-let did = ''
-//Get user profile data in form
-const idCreate = document.getElementById('id-create-button');
+// PREPARE TO CONNECT TO CERAMIC
+// point to ceramic test net url - avbl options :
+
+// read only access :
+// const API_URL = 'https://gateway-clay.ceramic.network'
+// write access:
+const API_URL = 'https://ceramic-clay.3boxlabs.com'
+// local node
+// const API_URL = 'https://localhost:7007'
+
+// Create Ceramic instance of http-client
+const ceramic = new CeramicClient(API_URL);
 
 idCreate.onclick = async () => {
-  // grab value from input box
-//   const isString = value => typeof value === 'string' || value instanceof String;
-  const name = document.getElementById('id-name-box').value;
-  const age = document.getElementById('id-age-box').value;
-  const phone = document.getElementById('id-phone-box').value;
-
-//   var web3 = new Web3(window.ethereum)
-//   // instantiate smart contract instance
-//   const idWallet = new web3.eth.Contract(idABI, idAddress)
-//   idWallet.setProvider(window.ethereum)
-  
 
   // set up ceramic : Prep to generate did and stream ID 
   // did -> URL in the identity world. unique to a asset, person, org
   // stream ID -> reference to Tile document that holds the data. Deterministic replacement for IPFS CID
 
-  setupCeramic().then(console.log("Ceramic setup complete.. "))
+  setupCeramic().then(console.log("Ceramic setup complete.. ")) 
 
-  //using '*' concatenate to work around issue where variable is being passed of reference here and ends up 
-  // undefined inside solidity
-  // 
-
-  //did has to be authenticated prior to use 
-  authCeramic().then(value => {
-	// add space to force store by value. (workaround for a store by reference error)
-	const didSpace = ceramic.did.id + " "
-	did = didSpace.trim()
-	console.log("DID authenticated..")
+	//DID needs to be authenticated before use
+    authCeramic().then(value => {
+	// concatenated space to force store by value. (workaround for a error encountereed where did was being
+	// passed as reference and ended up as null at the time of writing to smart contract)
+	const didSp = ceramic.did.id + " "
+	did = didSp.trim()
+	console.log("did after ceramic set up: " + did)
 
 	// if did authenticated successfully, create tile. (Tile document holds the user profile data. 
 	// this function returns stream ID reference for future document retreival and update)
-	createTile(did).then(value => {
-		const streamID = value.id + " "
-		console.log(" stream from tile create :" + streamID)
-	// Store DID/ URL references only on block to save space..
-	// Bulkier user data can be stored on IPFS via ceramic APIs 
+	createProfileOffChain(did).then(value => {
+		const streamIDSp = value.id + " "
+		const streamID = streamIDSp.trim()
+		console.log(" stream from tile create : " + streamID)
 
-	// save onchain data
-		saveProfileRef(ethAcc, did, streamID)
-	// save offchain data
-		updateProfile(name, age, phone, did)
+	// Store DID/ URL references only on block to save space..
+	storeUrlsOnChain(ethAcc, did, streamID)
+			.then(value => {
+			const name = document.getElementById('id-name-box').value;
+			const age = document.getElementById('id-age-box').value;
+			const phone = document.getElementById('id-phone-box').value;  
+			
+			console.log(`name, age, phone: ${name}, ${age}, ${phone}`)
+			// store bulkier/ expandable profile data offchain
+			updateProfileOffChain(name, age, phone, did)
+
+			// const idDisplayValue1 = document.getElementById('read-output-did')
+			// const idDisplayValue2 = document.getElementById('read-output-stream')
+			// const idDisplayValue2 = document.getElementById('read-profile-name')
+			// const idDisplayValue2 = document.getElementById('read-profile-age')
+			// const idDisplayValue2 = document.getElementById('read-profile-phone')
+
+			//screen confirmation
+			idOutput.innerHTML = "Create profile - done!"
+			idUpdate.disabled = false;
+			idGetValue.disabled = false;
+			})
+			.catch((error) => {alert("Profile create failed")});
 		})
 	})
-	idCreate.disabled = true;
-
+	// create profile option can be disabled from the front end, but enabled here to test scenario with dup
+	// profile creation 
+	// 
+	// idCreate.disabled = true;
 }
 
 //////////////////////////////////////////
 // UPDATE USER PROFILE 
 //////////////////////////////////////////
-
-const idUpdate = document.getElementById('id-update-button');
 
 idUpdate.onclick = async () => {
 	// grab value from input box
@@ -311,37 +565,47 @@ idUpdate.onclick = async () => {
 	const name = document.getElementById('id-name-box').value;
 	const age = document.getElementById('id-age-box').value;
 	const phone = document.getElementById('id-phone-box').value;
+	const idOutput = document.getElementById('id-msg-output')
+
 	// pull did reference from chain
-	retrieveUserRef(ethAcc).then(value => {
-		const didTemp = value[0]
-		// then update profile data
-		updateProfile(name, age, phone, didTemp)
-		})
-	}		
+	ReadUrlsOnChain(ethAcc).then(value => {
+		// get first argument returned from contract read call
+		// get rid of extra spaces if any
+		const did = value[0].trim()
+		console.log("DID from retrieve user ref : " + did)
+		updateProfileOffChain(name, age, phone, did)
+		.then(idOutput.innerHTML = "Update profile - done!")
+	})
+}	
 
 ////////////////////////////////////////// 
 // READ USER PROFILE
 //////////////////////////////////////////
 
-const idGetValue = document.getElementById('id-retrieve-button')
-
 	idGetValue.onclick = async () => {
-
+		//grab output fields
 		const idDisplayValue1 = document.getElementById('read-output-did')
 		const idDisplayValue2 = document.getElementById('read-output-stream')
 		
-		const value = await retrieveUserRef(ethAcc);
-		idDisplayValue1.innerHTML = "Retrieved DID: " + value[0];
-		idDisplayValue2.innerHTML =  "Retrieved Stream: " + value[1];
+		//read profile data from ETH smart contract
+		const value = await ReadUrlsOnChain(ethAcc);
+		idDisplayValue1.innerHTML = "DID reference : " + value[0];
+		idDisplayValue2.innerHTML =  "Stream ID : " + value[1];
 
-		// const didString = value[0] + " "
-		const didTemp = value[0].trim()
-		const streamIDTemp = value[0].trim()
+		//prepare for tile read (offchain document)
+		const didString = value[0] + " "
+		const thisDid = didString.trim()
 
-		//read Tile contents
-		console.log("DID returned by smart contract: " + didTemp)
-		console.log("StreamID returned by smart contract: " + streamIDTemp)
-		readTile(didTemp)
+		//ensure valid did exists. if not screen display above would confirm null data
+		if (thisDid != " " && thisDid != "") {
+			readProfileOffChain(thisDid).then(
+				value => {
+					profileValue1.innerHTML = "Name: " + value.content.name
+					profileValue2.innerHTML = "Age: " + value.content.age
+					profileValue3.innerHTML = "Phone: " + value.content.phone
+					idOutput.innerHTML = ""
+				})		
+		}		
 	}
 
 ////////////////////////////////////////// 
@@ -367,6 +631,7 @@ async function setupCeramic() {
 	// random seed bytes generator
 	const seed = randomBytes(32)
 
+	//update provider type
 	const provider = new Ed25519Provider(seed)
 	ceramic.did.setProvider(provider)
 	}
@@ -379,7 +644,7 @@ async function authCeramic() {
 /////////////////////////////////////////////////////
 ///  Create Tile Document
 ////////////////////////////////////////////////////
-const createTile = async function (_did) {
+const createProfileOffChain = async function (_did) {
 await ceramic.did.authenticate()
 
 const doc = await TileDocument.create(
@@ -398,42 +663,40 @@ return doc
 
 /////////////////////////////////////////////////////
 ///  Update Tile Document
+/// for deterministic document - family id is needed
 ////////////////////////////////////////////////////
 
-async function updateProfile(_name, _age, _phone, _did) {
+async function updateProfileOffChain(_name, _age, _phone, _did) {
+	//retrieve tile document
 	const doc = await TileDocument.deterministic(
 		ceramic,
 		{
 			controllers: [_did],
 			family: 'pid' 
 			//  tags: ['tag1']
-		},
-	  )  
-	//   await doc.update({
-	// 	  foo: " some random update"
-	//   })
-	  await doc.update({
-		  name: _name,
-		  age: _age,
-		  phone: _phone
+		})
+	
+	//update tile
+	await doc.update({
+		name: _name,
+		age: _age,
+		phone: _phone
 	})
-	//   console.log("_name, _age, _phone" + _name, _age, _phone)
-	}
+}
 	
 /////////////////////////////////////////////////////
 ///  Read Tile Document
+///  need both DID and family ID to retrieve a tile document
 ////////////////////////////////////////////////////
 
-async function readTile(_did) {
+async function readProfileOffChain(_did) {
 	const retrievedDoc = await TileDocument.deterministic(
 	  ceramic,
 	  {controllers: [_did],
 	   family: 'pid'})
 	//    anchor: false, publish: false})
 	
-	console.log("Reading tile data... " + retrievedDoc.content.name)
-	console.log("Reading tile data... " + retrievedDoc.content.age)
-	console.log("Reading tile data... " + retrievedDoc.content.phone)
+	return retrievedDoc
 	}
 	
 ////////////////////////////////////////////////////
@@ -441,66 +704,71 @@ async function readTile(_did) {
 ////////////////////////////////////////////////////
 
 //store DID & streamID in mini userprofile maintained on chain
-async function saveProfileRef(_ethAcc, _did, _stream) {
-	await idWallet.methods.saveDID(_ethAcc, _did, _stream).send({from: ethereum.selectedAddress})
+async function storeUrlsOnChain(_ethAcc, _did, _stream) {
+	return await idWallet.methods.saveUrl(_ethAcc, _did, _stream).send({from: ethereum.selectedAddress})
 }
 
 ////////////////////////////////////////// 
 // RETRIEVE DID/STREAM IDS FROM FROM SMART CONTRACT
 //////////////////////////////////////////
-async function retrieveUserRef(_ethAcc) {
-	return await idWallet.methods.retrieveDID(_ethAcc).call({from: ethereum.selectedAddress})
+async function ReadUrlsOnChain(_ethAcc) {
+	return await idWallet.methods.retrieveUrl(_ethAcc).call({from: ethereum.selectedAddress})
 }
 
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///// TESTING ONLY - SIMPLE STORAGE
-///// TESTING ONLY - SIMPLE STORAGE
-///// TESTING ONLY - SIMPLE STORAGE
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
+function validateEthAcc() {
+	// future code
+	}
 
-const ssSetValue = document.getElementById('ss-set-value')
 
-ssSetValue.onclick = async () => {
+// ///////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////
+// ///// TESTING ONLY - SIMPLE STORAGE
+// ///// TESTING ONLY - SIMPLE STORAGE
+// ///// TESTING ONLY - SIMPLE STORAGE
+// ///////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////
 
-  var web3 = new Web3(window.ethereum)
+// const ssSetValue = document.getElementById('ss-set-value')
 
-  const ssInputValue = document.getElementById('ss-input-box').value;
+// ssSetValue.onclick = async () => {
 
-  const idWallet = new web3.eth.Contract(idABI, idAddress)
-  idWallet.setProvider(window.ethereum)
+//   var web3 = new Web3(window.ethereum)
 
-//   await idWallet.methods.set(ssInputValue).send({from: ethereum.selectedAddress})
-  await idWallet.methods.set(ethAcc).send({from: ethereum.selectedAddress})
+//   const ssInputValue = document.getElementById('ss-input-box').value;
 
-  console.log("Updating simple storage...")
-  console.log(ssInputValue)
+//   const idWallet = new web3.eth.Contract(idABI, idAddress)
+//   idWallet.setProvider(window.ethereum)
 
-//   const idDisplayValue = document.getElementById('ss-output-field')
+// //   await idWallet.methods.set(ssInputValue).send({from: ethereum.selectedAddress})
+//   await idWallet.methods.set(ethAcc).send({from: ethereum.selectedAddress})
 
-//   idDisplayValue.innerHTML = 'Values from storage ' + idDisplayValue
+//   console.log("Updating simple storage...")
+//   console.log(ssInputValue)
 
-}
+// //   const idDisplayValue = document.getElementById('ss-output-field')
 
-const ssGetValue = document.getElementById('ss-get-value')
+// //   idDisplayValue.innerHTML = 'Values from storage ' + idDisplayValue
 
-ssGetValue.onclick = async () => {
+// }
 
-  var web3 = new Web3(window.ethereum)
+// const ssGetValue = document.getElementById('ss-get-value')
 
-  const idWallet = new web3.eth.Contract(idABI, idAddress)
-  idWallet.setProvider(window.ethereum)
+// ssGetValue.onclick = async () => {
 
-  var value = await idWallet.methods.get().call({from: ethereum.selectedAddress})
+//   var web3 = new Web3(window.ethereum)
 
-  console.log(value)
+//   const idWallet = new web3.eth.Contract(idABI, idAddress)
+//   idWallet.setProvider(window.ethereum)
 
-  const ssDisplayValue = document.getElementById('ss-output-field')
+//   var value = await idWallet.methods.get().call()
 
-  ssDisplayValue.innerHTML = 'Reading from Simple Storage... : ' + value
+//   console.log(value)
 
-}
+//   const ssDisplayValue = document.getElementById('ss-output-field')
+
+//   ssDisplayValue.innerHTML = 'Reading from Simple Storage... : ' + value
+
+// }
 
 ////////////////////////////////////////////////////////////
 //// VALIDATE IF USER ETH ADDRESS LINNKED TO A VALID PROFILE 

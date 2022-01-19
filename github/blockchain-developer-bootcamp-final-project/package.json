@@ -21,9 +21,13 @@
     "@ceramicnetwork/http-client": "^1.5.2",
     "@ceramicnetwork/stream-tile": "^1.5.2",
     "@stablelib/random": "^1.0.1",
+    "@truffle/hdwallet-provider": "^2.0.0",
     "dids": "^2.4.3",
+    "dotenv": "^14.2.0",
     "key-did-provider-ed25519": "^1.1.0",
     "key-did-resolver": "^1.4.0",
+    "openzeppelin-solidity": "4.4.2",
+    "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.6.1"
   }
 }
