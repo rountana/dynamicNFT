@@ -13,7 +13,7 @@ import { randomBytes } from '@stablelib/random'
 
 // var encrypt = window.ethereum.;
 // contract address on Ropsten:
-const idAddress = '0x670A04216f6A7CE80f90f951cce75F0dEE9472BF'
+const idAddress = '0x6e8dD7afEF6c76B8Ba23e7059F7db489B6276409'
 
 // add contract ABI from Remix:
 const idABI =
