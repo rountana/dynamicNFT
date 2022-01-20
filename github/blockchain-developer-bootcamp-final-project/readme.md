@@ -53,6 +53,7 @@ App Demo
 https://youtu.be/DnPJ6aswdC0
 
 Hosted Front end
+https://shiny-salad-4009.on.fleek.co/github/blockchain-developer-bootcamp-final-project/dist/
 
 Deployed public Testnet: Ropsten
 
