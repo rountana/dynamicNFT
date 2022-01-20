@@ -13,7 +13,7 @@ import { randomBytes } from '@stablelib/random'
 
 // var encrypt = window.ethereum.;
 // contract address on Ropsten:
-const idAddress = '0x6e8dD7afEF6c76B8Ba23e7059F7db489B6276409'
+const idAddress = '0x9a1Ac570b57372e068DCbbe3EaE5d8059b371F8d'
 
 // add contract ABI from Remix:
 const idABI =
@@ -425,6 +425,7 @@ chkUserAccess.onclick = async () => {
 			alert("No linked profile..")
 			//enable option to add address as root user
 			idCreate.disabled = false;
+			idAddRootUser.disabled = false;
 		}	
 }
 
@@ -451,6 +452,7 @@ idAddRootUser.onclick = async () => {
   //provide screen confirmation 
   const mapResult = document.getElementById('map-rootuser-result')
   mapResult.innerHTML = "Added " + rootUserAddr + " as root user";
+  idDelRootUser.disabled = false;
 
 }
 

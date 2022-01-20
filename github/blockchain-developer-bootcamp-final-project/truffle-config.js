@@ -17,10 +17,12 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
+/// uncomment below for Ropsten public testnet
  const HDWalletProvider = require('@truffle/hdwallet-provider');
  const dotenv = require('dotenv');
  dotenv.config();
  const mnemonic = process.env.MNEMONIC;
+//
  
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
@@ -59,6 +61,8 @@ module.exports = {
     // from: <address>,        // Account to send txs from (default: accounts[0])
     // websocket: true        // Enable EventEmitter interface for web3 (default: false)
     // },
+
+    /// uncomment below for Ropsten public testnet
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     ropsten: {
@@ -69,6 +73,7 @@ module.exports = {
     timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
     skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
+    //
     // Useful for private networks
     // private: {
     // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),

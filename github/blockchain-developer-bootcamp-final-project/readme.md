@@ -49,6 +49,10 @@ Known Issues
 
 (3) Trying to Create a duplicate profile - errors out in the smart contract. This is expected behavior, however this again breaks the ceramic link - causing problems with further updates. Same workaround as issue (1)
 
+FRONT END
+https://billowing-mouse-6206.on.fleek.co/github/blockchain-developer-bootcamp-final-project/dist/
+
+Deployed public Testnet: Ropsten
 
 REQUIREMENTS
 Node.js v14, and npm v6 
@@ -58,7 +62,7 @@ truffle/ ganache
 
 note: npm v7 and over is not supported by ceramic JS Http client. However, installing the node-pre-gyp package globally may make it work. Reference: https://developers.ceramic.network/build/javascript/http/
 
-Help to downgrade npm 
+Downgrading npm 
 npm install -g npm@6
 brew unlink node 
 brew link node@14 // to go back to latest version
@@ -72,13 +76,18 @@ Change into the directory
 npm start
 
 Running the code locally:
+
+Unit Testing
+truffle develop
+truffle migrate -> to ensure the right accounts are used for truffle test work right. To verify accounrs : let accounts = await web3.eth.getAccounts()).
+Truffle test
+
+Testing via UI (locally)
+
+launch ganache in port 7545/ network id 5777. Settings -> Add projects -> point to truffle-config.js
+truffle develop
 truffle migrate --network development --reset
 npx webpack
-launch ganache in port 7545/ network id 5777. Settings -> Add projects -> point to truffle-config.js
-
-The 10 accounts that come with Truffle test and Ganache seem to differ. 
-For unit testing purposes, the first address from the list will be used as owner.(Verified on the cli using : await web3.eth.getAccounts()) 
-For UI based testing, imported ganache accounts, while ensuring one of them is the contract creation address (verified using: truffle develop)
 
 Public Ethereum Address
 0x2013934dCA0aC6dF9b253cFA25E8966ea9794092
