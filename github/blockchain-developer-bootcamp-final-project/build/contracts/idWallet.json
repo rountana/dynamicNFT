@@ -18467,10 +18467,87 @@
   },
   "networks": {
     "3": {
-      "events": {},
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0xecceaf54d8c42d59b7489b65253f3dbdcd5fc65939181447abf9a7b05e03caf4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "msg",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "did",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "sid",
+              "type": "string"
+            }
+          ],
+          "name": "UrlLog",
+          "type": "event"
+        },
+        "0x7f312466178d31bf6c19625e21584148ef3140dd726c39d7e983c7efe604eaf4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "msg",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "ethAcc",
+              "type": "address"
+            }
+          ],
+          "name": "accountAddrLog",
+          "type": "event"
+        },
+        "0xca3c6bd816897fd92deef035afea50ca92d0c884c9769ca69c18b2edcefd8b7b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "msg",
+              "type": "string"
+            }
+          ],
+          "name": "messg",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x6e8dD7afEF6c76B8Ba23e7059F7db489B6276409",
-      "transactionHash": "0xb5e00716c59bb3dbb82a3c1ebb36356c378657183e8bc2c31a85d6f852093b0c"
+      "address": "0x9C718feFa6361a506366f08B72b995e7eA5A82b5",
+      "transactionHash": "0x748f14c14c8c9d686e891d6dfae5096159a563ce5f8a788200ed1f36d6f19ba8"
     },
     "1337": {
       "events": {
@@ -18684,7 +18761,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-20T02:40:56.468Z",
+  "updatedAt": "2022-01-20T03:36:51.379Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

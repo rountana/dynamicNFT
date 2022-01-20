@@ -49,8 +49,10 @@ Known Issues
 
 (3) Trying to Create a duplicate profile - errors out in the smart contract. This is expected behavior, however this again breaks the ceramic link - causing problems with further updates. Same workaround as issue (1)
 
-FRONT END
-https://billowing-mouse-6206.on.fleek.co/github/blockchain-developer-bootcamp-final-project/dist/
+App Demo
+https://youtu.be/DnPJ6aswdC0
+
+Hosted Front end
 
 Deployed public Testnet: Ropsten
 
@@ -88,6 +90,7 @@ launch ganache in port 7545/ network id 5777. Settings -> Add projects -> point 
 truffle develop
 truffle migrate --network development --reset
 npx webpack
+
 
 Public Ethereum Address
 0x2013934dCA0aC6dF9b253cFA25E8966ea9794092
