@@ -1,0 +1,83 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0B2434;
+    padding: 100px;
+}
+
+main {
+    background-color: #F5F5F5;
+    text-align: center;
+    font: 100;
+    color: black;
+    border-style: solid;
+    border-radius: 15px;
+    height: 300px;
+    padding: 20px;
+    /* centers the dice boxes in the centre of the main container
+    */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    justify-content: space-around;
+    align-items: center;
+}
+
+.dice--container {
+    display:grid;
+    grid-template: auto auto / repeat(5, 1fr);
+    gap: 20px;
+
+}
+
+.dice--box {
+    height:50px;
+    width: 50px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+    border-style:none;
+    border-radius: 10px;
+    /* put text in the center of the box  */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+}
+
+.dice--box--selected {
+    height:50px;
+    width: 50px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+    border-style:none;
+    border-radius: 10px;
+    /* put text in the center of the box  */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+    background-color: green;
+}
+
+.button--container {
+    padding: 40px;
+}
+.roll--button {
+    height:50px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+    border:none;
+    background-color: #5035FF;
+    color:#F5F5F5;
+}
+
+.roll-dice:focus {
+    outline: none;
+}
+
+.roll--button:active{
+    box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+
+}
+

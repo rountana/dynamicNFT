@@ -2,14 +2,58 @@ import React from "react";
 import memesData from "../memesData";
 
 export default function Meme() {
-  //fetch the memes from internal data file
-  function getMeme() {
-    const memesArray = memesData.data.memes;
-    var getArrayElement =
-      memesArray[Math.floor(Math.random() * memesArray.length)];
-    console.log(getArrayElement);
+  const [imageUrl, setImageUrl] = React.useState("");
+  const [allMeme, setAllMeme] = React.useState(memesData);
+  const [meme, setMeme] = React.useState({
+    topText: "",
+    bottomText: "",
+    randomImage: "http://i.imgflip.com/1bij.jpg",
+  });
+
+  //make form state the single source of truth
+  function handleChange(event) {
+    setMeme((prevFormData) => {
+      return {
+        ...prevFormData,
+        [event.target.name]: event.target.value,
+      };
+    });
   }
 
+  //call api after first render only, no dependencies
+  // pass function inside useEffect function
+  React.useEffect(() => {
+    fetch("https://api.imgflip.com/get_memes")
+      .then((res) => res.json)
+      .then((data) => setAllMeme(data.data.memes));
+    // console.log(allMeme);
+  }, []);
+
+  // //with async await
+  // React.useEffect(async () => {
+  //   const res = await fetch("https://api.imgflip.com/get_memes");
+  //   const data = await res.json();
+  //   setAllMemes(data.data.memes);
+  // }, []);
+
+  //fetch the memes from internal data file
+  function getMeme() {
+    const memesArray = allMeme.data.memes;
+    console.log(memesArray);
+    var randomNum = Math.floor(Math.random() * memesArray.length);
+    // console.log(allMeme.memes);
+    // console.log(memesArray[randomNum].url);
+    const url = memesArray[randomNum].url;
+    // const url = "http://i.imgflip.com/1bij.jpg";
+    setMeme((prevMeme) => {
+      return {
+        ...prevMeme,
+        randomImage: url,
+      };
+    });
+  }
+
+  //fetch the
   return (
     <div className="memecontainer">
       <form className="memeform">
@@ -17,11 +61,15 @@ export default function Meme() {
           className="memetext"
           type="text"
           placeholder="top text.."
+          onChange={handleChange}
+          name="topText"
         ></input>
         <input
           className="memetext"
           type="text"
           placeholder="bottom text.."
+          onChange={handleChange}
+          name="bottomText"
         ></input>
       </form>
       {/* note onclick event function getmeme. If we pass the function
@@ -31,7 +79,12 @@ export default function Meme() {
         <button className="memebutton" onClick={getMeme}>
           Get new meme image
         </button>
-        <img className="memeimage" />
+        {/* <img className="memeimage" src={meme} /> */}
+        <div className="meme">
+          <img src={meme.randomImage} className="meme--image" />
+          <h2 className="meme--text top">{meme.topText}</h2>
+          <h2 className="meme--text bottom">{meme.bottomText}</h2>
+        </div>
       </div>
     </div>
   );
